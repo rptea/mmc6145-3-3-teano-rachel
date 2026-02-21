@@ -44,6 +44,10 @@ export default function Search() {
   async function handleSubmit(e) {
     e.preventDefault()
 
+    if (!query.trim()) {
+      return
+    }
+
     if (fetching) {
       return
     }
