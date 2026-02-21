@@ -93,6 +93,19 @@ export default function Search() {
         : bookSearchResults?.length
         ? <div className={styles.bookList}>
             {/* TODO: render BookPreview components for each search result here based on bookSearchResults */}
+            {bookSearchResults.map(book => {
+              const info = book.volumeInfo
+
+              return (
+                <BookPreview
+                  key={book.id}
+                  title={info.title}
+                  authors={info.authors}
+                  thumbnail={info.imageLinks?.thumbnail}
+                  previewLink={info.previewLink}
+                />
+              )
+            })}
           </div>
         : <NoResults
           {...{inputRef, inputDivRef, previousQuery}}
