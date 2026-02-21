@@ -14,10 +14,25 @@ export default function Search() {
   // starts as false -> not fetching yet; set to true when starting a fetch
   // set back to false when done so UI can show or hide a loading message
 
+
   // TODO: When the Search Page loads, use useEffect to fetch data from:
   // https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=YOUR_QUERY
   // Use a query of "React"
 
+  useEffect (() => {
+    async function fetchBooks() {
+      setFetching(true)
+      
+      const res = await fetch("https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=React")
+      const data = await res.json()
+
+      setBookSearchResults(data.items)
+      setPreviousQuery("React")
+      setFetching(false)
+    }
+
+    fetchBooks()
+  }, [])
 
   // TODO: Write a submit handler for the form that fetches data from:
   // https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=YOUR_QUERY
@@ -25,6 +40,8 @@ export default function Search() {
   // This function MUST prevent repeat searches if:
   // fetch has not finished
   // the query is unchanged
+
+
 
   const inputRef = useRef()
   const inputDivRef = useRef()
