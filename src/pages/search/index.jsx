@@ -41,7 +41,26 @@ export default function Search() {
   // fetch has not finished
   // the query is unchanged
 
+  async function handleSubmit(e) {
+    e.preventDefault()
 
+    if (fetching) {
+      return
+    }
+
+    if (query === previousQuery) {
+      return
+    }
+
+    setFetching (true)
+
+    const res = await fetch("https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=" + query)
+    const data = await res.json() 
+
+    setPreviousQuery(query)
+    setBookSearchResults(data.items)
+    setFetching(false)
+  }
 
   const inputRef = useRef()
   const inputDivRef = useRef()
@@ -50,13 +69,15 @@ export default function Search() {
     <main className={styles.search}>
       <h1>Book Search</h1>
       {/* TODO: add an onSubmit handler */}
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor="book-search">Search by author, title, and/or keywords:</label>
         <div ref={inputDivRef}>
           {/* TODO: add value and onChange props to the input element based on query/setQuery */}
           <input
             ref={inputRef}
             type="text"
+            value={query} 
+            onChange={(e) => setQuery(e.target.value)}
             name="book-search"
             id="book-search"
             />
